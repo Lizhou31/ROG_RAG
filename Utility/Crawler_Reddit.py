@@ -71,7 +71,7 @@ class RedditCrawler:
                 
                 # Click on post to get content
                 post.click()
-                time.sleep(2)
+                time.sleep(5)
                 
                 try:
                     content_element = self.wait.until(
@@ -109,7 +109,7 @@ def main():
     crawler = RedditCrawler("mouse")
     
     # Get latest 10 posts
-    latest_posts = crawler.get_latest_posts(10)
+    latest_posts = crawler.get_latest_posts(1)
     
     # Print the posts
     crawler.print_posts(latest_posts)
