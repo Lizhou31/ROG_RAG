@@ -74,10 +74,10 @@ class RedditCrawler:
                 time.sleep(5)
                 
                 try:
-                    content_element = self.wait.until(
-                        EC.presence_of_element_located((By.CSS_SELECTOR, 'div[class="text-neutral-content"] div.md.text-14 p'))
+                    content_elements = self.wait.until(
+                        EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'div[class="text-neutral-content"] div.md.text-14 p'))
                     )
-                    content = content_element.text
+                    content = ' '.join([element.text for element in content_elements])
                 except:
                     content = ''
                     
