@@ -1,47 +1,72 @@
 ROG Harpe Ace Mini (P716) 
-An ultralight 49-gram semi-symmetrical gaming mouse, the ROG Harpe Ace Mini features a shape approved by professional FPS players. It is equipped with a 42,000-dpi ROG AimPoint Pro optical sensor and ROG Optical Micro Switches. The mouse delivers industry-leading wireless performance with SpeedNova wireless technology and supports up to an 8,000 Hz wireless polling rate (compatible with the ROG Polling Rate Booster). 
+An ultralight 49-gram semi-symmetrical gaming mouse, the ROG Harpe Ace Mini features a shape approved by professional FPS players. It is equipped with a 42,000-dpi ROG AimPoint Pro optical sensor and ROG Optical Micro Switches. The mouse delivers industry-leading wireless performance with SpeedNova wireless technology and supports up to an 8,000 Hz wireless polling rate (compatible with the ROG Polling Rate Booster).
 
 <chunk>
 
 ROG Harpe Ace Extreme (P718)
-This high-end, 47-gram wireless gaming mouse is constructed from carbon fiber composite. It boasts a 42,000-dpi ROG AimPoint Pro Optical Sensor and ROG Optical Micro Switches. The Harpe Ace Extreme also includes glass mouse feet and supports an 8,000 Hz polling rate with the ROG Polling Rate Booster. 
+This high-end, 47-gram wireless gaming mouse is constructed from carbon fiber composite. It boasts a 42,000-dpi ROG AimPoint Pro Optical Sensor and ROG Optical Micro Switches. The Harpe Ace Extreme also includes glass mouse feet and supports an 8,000 Hz polling rate with the ROG Polling Rate Booster.
 
 <chunk>
 
 ROG Keris II Ace (P714)
-Weighing 54 grams, the ROG Keris II Ace is an ergonomic gaming mouse with a shape tested by professional FPS players. It features a 42,000-dpi ROG AimPoint Pro optical sensor, ROG Optical Micro Switches, and ROG SpeedNova wireless technology. The mouse enhances gaming performance further with the ROG Polling Rate Booster, supporting polling rates up to 4,000 Hz in wireless mode and up to 8,000 Hz in wired mode. 
+Weighing 54 grams, the ROG Keris II Ace is an ergonomic gaming mouse with a shape tested by professional FPS players. It features a 42,000-dpi ROG AimPoint Pro optical sensor, ROG Optical Micro Switches, and ROG SpeedNova wireless technology. The mouse enhances gaming performance further with the ROG Polling Rate Booster, supporting polling rates up to 4,000 Hz in wireless mode and up to 8,000 Hz in wired mode.
 
 <chunk>
 
-ROG Strix Impact III (P520)
-Wireless This ultralight 57-gram compact gaming mouse offers ROG SpeedNova wireless and Bluetooth® modes with long-lasting battery life. The ROG AimPoint optical sensor ensures precise tracking, and the ROG Omni Receiver allows connections to a keyboard and mouse via a single dongle. 
+ROG Strix Impact III Wireless (P520)
+This ultralight 57-gram compact gaming mouse offers ROG SpeedNova wireless and Bluetooth® modes with long-lasting battery life. The ROG AimPoint optical sensor ensures precise tracking, and the ROG Omni Receiver allows connections to a keyboard and mouse via a single dongle.
 
 <chunk>
 
-ROG Gladius III Wireless 
-AimPoint EVA-02 Edition A 79-gram wireless gaming mouse, the ROG Gladius III Wireless AimPoint EVA-02 Edition features a 36,000-dpi ROG AimPoint optical sensor, tri-mode connectivity, ROG SpeedNova wireless technology, swappable mouse switches, ROG Micro Switches, ROG Paracord, 100% PTFE mouse feet, and mouse grip tape. 
+ROG Gladius III Wireless AimPoint EVA-02 Edition
+A 79-gram wireless gaming mouse, the ROG Gladius III Wireless AimPoint EVA-02 Edition features a 36,000-dpi ROG AimPoint optical sensor, tri-mode connectivity, ROG SpeedNova wireless technology, swappable mouse switches, ROG Micro Switches, ROG Paracord, 100% PTFE mouse feet, and mouse grip tape.
 
 <chunk>
 
 ROG Harpe Ace Aim Lab Edition (P713)
-This ultra-lightweight 54-gram wireless gaming mouse has a pro-tested form factor, a 36,000-dpi ROG AimPoint optical sensor, ROG SpeedNova wireless technology, tri-mode connectivity, ROG Micro Switches, five programmable buttons, and synergy profile setting functions with the Aim Lab Settings Optimizer. 
+This ultra-lightweight 54-gram wireless gaming mouse has a pro-tested form factor, a 36,000-dpi ROG AimPoint optical sensor, ROG SpeedNova wireless technology, tri-mode connectivity, ROG Micro Switches, five programmable buttons, and synergy profile setting functions with the Aim Lab Settings Optimizer.
 
 <chunk>
 
-ROG Chakram X Origin 
-The ROG Chakram X is a wireless RGB gaming mouse equipped with a next-gen 36,000 dpi ROG AimPoint optical sensor, 8,000 Hz polling rate, low-latency tri-mode connectivity (RF 2.4 GHz / Bluetooth / wired), 11 programmable buttons, an analog joystick, and hot-swappable micro switch sockets (mechanical/optical). 
+ROG Chakram X Origin
+The ROG Chakram X is a wireless RGB gaming mouse equipped with a next-gen 36,000 dpi ROG AimPoint optical sensor, 8,000 Hz polling rate, low-latency tri-mode connectivity (RF 2.4 GHz / Bluetooth / wired), 11 programmable buttons, an analog joystick, and hot-swappable micro switch sockets (mechanical/optical).
 
 <chunk>
 
-ROG Strix Impact III 
-A lightweight, ambidextrous 59-gram wired RGB gaming mouse, the ROG Strix Impact III is suitable for FPS gameplay. It features a 12,000-dpi optical sensor, near-zero click latency, swappable mouse switch sockets, ROG Micro Mouse Switches, ROG Paracord, 100% PTFE mouse feet, and a durable design. 
+ROG Strix Impact III
+A lightweight, ambidextrous 59-gram wired RGB gaming mouse, the ROG Strix Impact III is suitable for FPS gameplay. It features a 12,000-dpi optical sensor, near-zero click latency, swappable mouse switch sockets, ROG Micro Mouse Switches, ROG Paracord, 100% PTFE mouse feet, and a durable design.
 
 <chunk>
 
 ROG Keris Wireless AimPoint (P709)
-This lightweight 75-gram wireless RGB gaming mouse includes a 36,000 dpi ROG AimPoint optical sensor, tri-mode connectivity, ROG SpeedNova wireless technology, swappable mouse switches, ROG Micro Switches, PBT buttons, ROG Paracord, 100% PTFE mouse feet, five programmable buttons, and ROG mouse grip tape. 
+This lightweight 75-gram wireless RGB gaming mouse includes a 36,000 dpi ROG AimPoint optical sensor, tri-mode connectivity, ROG SpeedNova wireless technology, swappable mouse switches, ROG Micro Switches, PBT buttons, ROG Paracord, 100% PTFE mouse feet, five programmable buttons, and ROG mouse grip tape.
 
 <chunk>
 
-ROG Gladius III Wireless AimPoint 
-The ROG Gladius III Wireless AimPoint is a lightweight 79-gram wireless RGB gaming mouse featuring a 36,000-dpi ROG AimPoint optical sensor, tri-mode connectivity, ROG SpeedNova wireless technology, swappable mouse switches, ROG Micro Switches, a pivoted button mechanism for 0 ms click latency, ergonomic design, ROG Paracord, 100% PTFE mouse feet, six programmable buttons, and mouse grip tape. 
+ROG Gladius III Wireless AimPoint
+The ROG Gladius III Wireless AimPoint is a lightweight 79-gram wireless RGB gaming mouse featuring a 36,000-dpi ROG AimPoint optical sensor, tri-mode connectivity, ROG SpeedNova wireless technology, swappable mouse switches, ROG Micro Switches, a pivoted button mechanism for 0 ms click latency, ergonomic design, ROG Paracord, 100% PTFE mouse feet, six programmable buttons, and mouse grip tape.
+
+<chunk>
+
+ROG Spatha X
+A wireless gaming mouse with dual-mode connectivity (wired/2.4 GHz), a magnetic charging dock, 12 programmable buttons, a specially tuned 19,000 dpi optical sensor, exclusive swappable micro switch sockets, ROG Micro Switches, ROG Paracord, and Aura Sync RGB lighting.
+
+<chunk>
+
+ROG Gladius III
+A classic right-handed wired gaming mouse featuring a specially tuned 19,000 dpi sensor, exclusive swappable micro switch sockets, ROG's signature design, ROG Omni mouse feet, ROG Paracord, and Aura Sync RGB lighting.
+
+<chunk>
+
+ROG Gladius II Core
+An ergonomic, lightweight wired optical gaming mouse equipped with a 6,200-dpi sensor, exclusive swappable micro switch sockets, and Aura RGB lighting.
+
+<chunk>
+
+ROG Strix Impact II Moonlight White
+An ambidextrous ergonomic gaming mouse featuring a 6,200-dpi optical sensor, swappable micro switch sockets, and AURA SYNC RGB lighting.
+
+<chunk>
+
+ROG Keris Wireless EVA Limited Edition
+A special edition wireless gaming mouse featuring EVA-inspired design elements, Bluetooth connectivity, a lightweight design, swappable micro switch sockets, and ergonomic shape.
