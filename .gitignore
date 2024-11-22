@@ -1,2 +1,5 @@
 API_Key/
 vector_store.json
+
+**/*.pyc
+result.md
