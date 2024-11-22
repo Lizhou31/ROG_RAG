@@ -19,7 +19,7 @@ def get_forum_results():
     forum_crawler = Forum_Crawler()
     
     # Get latest 10 posts from forum
-    forum_posts = forum_crawler.get_latest_posts(10)
+    forum_posts = forum_crawler.get_latest_posts(5)
     
     # Create RAG retriever instance
     retriever = RAGRetriever()
