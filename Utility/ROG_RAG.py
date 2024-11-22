@@ -56,6 +56,7 @@ class RAGRetriever:
         - Forum Topic: {topic}
         - Forum Description: {description}
 
+        All the result should be in English.
         Retrieved Products description:
         {retrieved_docs}
 

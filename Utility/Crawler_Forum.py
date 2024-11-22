@@ -36,7 +36,7 @@ class Forum_Crawler:
         topic_link = post.find('a')
         topic = topic_link.text.strip() if topic_link else ''
         
-        url = topic_link['href'] if topic_link else ''
+        url = 'https://rog-forum.asus.com' + topic_link['href'] if topic_link else ''
         
         message_body = post.find('p')
         content = message_body.text.strip() if message_body else ''
