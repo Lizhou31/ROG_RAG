@@ -9,44 +9,92 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
+            // Store results arrays
+            let forumResults = new Array(5).fill(null);
+            let redditResults = new Array(5).fill(null);
+            
+            // Function to render a single forum result
+            function renderForumResult(post, index) {
+                return `
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">${post.topic}</h5>
+                            <p class="card-text"><strong>Content:</strong> ${post.content}</p>
+                            <p class="card-text"><strong>URL:</strong> <a href="${post.url}" target="_blank">${post.url}</a></p>
+                            <p class="card-text"><strong>RAG Result:</strong> ${post.rag_result}</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Function to render a single reddit result
+            function renderRedditResult(post, index) {
+                return `
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">${post.title}</h5>
+                            <p class="card-text"><strong>Content:</strong> ${post.content}</p>
+                            <p class="card-text"><strong>URL:</strong> <a href="${post.url}" target="_blank">${post.url}</a></p>
+                            <p class="card-text"><strong>RAG Result:</strong> ${post.rag_result}</p>
+                        </div>
+                    </div>
+                `;
+            }
+
             // Trigger forum results on button click
             $('#load-forum-results').click(function() {
-                $.get('/get_forum_results', function(data) {
+                $('#forum-results').html('Loading results...');
+                forumResults = new Array(5).fill(null);
+                
+                const eventSource = new EventSource('/get_forum_results');
+                
+                eventSource.onmessage = function(event) {
+                    const result = JSON.parse(event.data);
+                    forumResults[result.index] = result;
+                    
+                    // Render all available results in order
                     let forumHtml = '';
-                    data.forEach(post => {
-                        forumHtml += `
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <h5 class="card-title">${post.topic}</h5>
-                                    <p class="card-text"><strong>Content:</strong> ${post.content}</p>
-                                    <p class="card-text"><strong>URL:</strong> <a href="${post.url}" target="_blank">${post.url}</a></p>
-                                    <p class="card-text"><strong>RAG Result:</strong> ${post.rag_result}</p>
-                                </div>
-                            </div>
-                        `;
+                    forumResults.forEach((post, index) => {
+                        if (post) {
+                            forumHtml += renderForumResult(post, index);
+                        } else {
+                            forumHtml += '<div class="card mb-3"><div class="card-body">Loading...</div></div>';
+                        }
                     });
                     $('#forum-results').html(forumHtml);
-                });
+                };
+                
+                eventSource.onerror = function() {
+                    eventSource.close();
+                };
             });
 
             // Trigger reddit results on button click
             $('#load-reddit-results').click(function() {
-                $.get('/get_reddit_results', function(data) {
+                $('#reddit-results').html('Loading results...');
+                redditResults = new Array(5).fill(null);
+                
+                const eventSource = new EventSource('/get_reddit_results');
+                
+                eventSource.onmessage = function(event) {
+                    const result = JSON.parse(event.data);
+                    redditResults[result.index] = result;
+                    
+                    // Render all available results in order
                     let redditHtml = '';
-                    data.forEach(post => {
-                        redditHtml += `
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <h5 class="card-title">${post.title}</h5>
-                                    <p class="card-text"><strong>Content:</strong> ${post.content}</p>
-                                    <p class="card-text"><strong>URL:</strong> <a href="${post.url}" target="_blank">${post.url}</a></p>
-                                    <p class="card-text"><strong>RAG Result:</strong> ${post.rag_result}</p>
-                                </div>
-                            </div>
-                        `;
+                    redditResults.forEach((post, index) => {
+                        if (post) {
+                            redditHtml += renderRedditResult(post, index);
+                        } else {
+                            redditHtml += '<div class="card mb-3"><div class="card-body">Loading...</div></div>';
+                        }
                     });
                     $('#reddit-results').html(redditHtml);
-                });
+                };
+                
+                eventSource.onerror = function() {
+                    eventSource.close();
+                };
             });
         });
     </script>

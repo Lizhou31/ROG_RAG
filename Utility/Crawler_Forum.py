@@ -1,4 +1,5 @@
-import requests
+import aiohttp
+import asyncio
 from bs4 import BeautifulSoup
 from abc import ABC, abstractmethod
 
@@ -19,6 +20,7 @@ class Forum_Crawler:
     def __init__(self, base_url='https://rog-forum.asus.com/t5/gaming-mice/bd-p/GGA_MS'):
         self.base_url = base_url
         self.filters = []
+        self.session = None
         # Add default filters
         self.add_filter(PinnedPostFilter())
         self.add_filter(ResolvedPostFilter())
@@ -43,32 +45,49 @@ class Forum_Crawler:
         
         return topic, url, content
 
-    def get_latest_posts(self, num_posts=10):
+    async def get_latest_posts(self, num_posts=10):
         latest_posts = []
         page_number = 1
 
-        while len(latest_posts) < num_posts:
-            url = f"{self.base_url}/page/{page_number}"
-            response = requests.get(url)
-            if response.status_code != 200:
-                break
+        async with aiohttp.ClientSession() as session:
+            self.session = session
+            while len(latest_posts) < num_posts:
+                url = f"{self.base_url}/page/{page_number}"
+                async with session.get(url) as response:
+                    if response.status != 200:
+                        break
 
-            soup = BeautifulSoup(response.content, 'html.parser')
-            posts = soup.find_all('article', class_=lambda x: x and 'custom-message-tile' in x.split())
+                    content = await response.text()
+                    soup = BeautifulSoup(content, 'html.parser')
+                    posts = soup.find_all('article', class_=lambda x: x and 'custom-message-tile' in x.split())
 
-            for post in posts:
-                if len(latest_posts) >= num_posts:
-                    break
+                    for post in posts:
+                        if len(latest_posts) >= num_posts:
+                            break
 
-                if self.should_skip_post(post):
-                    continue
+                        if self.should_skip_post(post):
+                            continue
 
-                topic, url, content = self.extract_post_data(post)
-                latest_posts.append((topic, url, content))
+                        topic, url, content = self.extract_post_data(post)
+                        latest_posts.append((topic, url, content))
 
-            page_number += 1
+                page_number += 1
 
         return latest_posts
+
+    async def process_single_post(self, post_data):
+        """Process a single post"""
+        topic, url, content = post_data
+        return {
+            "topic": topic,
+            "url": url,
+            "content": content
+        }
+
+    def close(self):
+        """Close the session if it exists"""
+        if self.session and not self.session.closed:
+            asyncio.create_task(self.session.close())
 
     def print_posts(self, posts):
         if posts:
@@ -79,15 +98,18 @@ class Forum_Crawler:
         else:
             print("Failed to retrieve the latest posts.")
 
-def main():
+async def main():
     # Create crawler instance
     crawler = Forum_Crawler()
     
-    # Get latest 5 posts
-    latest_posts = crawler.get_latest_posts(10)
-    
-    # Print the posts
-    crawler.print_posts(latest_posts)
+    try:
+        # Get latest 5 posts
+        latest_posts = await crawler.get_latest_posts(10)
+        
+        # Print the posts
+        crawler.print_posts(latest_posts)
+    finally:
+        crawler.close()
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
