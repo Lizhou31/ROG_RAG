@@ -1,5 +1,5 @@
 import os
-
+import json
 from abc import ABC, abstractmethod
 from langchain.schema import Document
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
@@ -28,7 +28,10 @@ class OllamaLLM(BaseLLM):
         return Ollama(model=self.model_name, temperature=self.temperature)
     
     def process_result(self, result):
-        return result
+        try:
+            return json.loads(result)
+        except json.JSONDecodeError:
+            return {"products": [], "summary": result}
 
 class OpenAILLM(BaseLLM):
     def __init__(self, model_name="gpt-4o-mini", temperature=0):
@@ -39,7 +42,10 @@ class OpenAILLM(BaseLLM):
         return ChatOpenAI(model=self.model_name, temperature=self.temperature)
     
     def process_result(self, result):
-        return result.content
+        try:
+            return json.loads(result.content)
+        except json.JSONDecodeError:
+            return {"products": [], "summary": result.content}
 
 class DocumentPreparation:
     def __init__(self, file_path='RAG_Files/Mouse.txt', llm_provider: BaseLLM = None):
@@ -103,9 +109,8 @@ class RAGRetriever:
 
         If you cannot find the relevant products from the database, just return "Unknown" and nothing else.
 
-        Output:
-        [Product 1, Product 2, Product 3...]
-        [Summary]
+        Please only output in json format but no other text. The summary should be a short summary of the forum post.
+        "products":[product1 name, product2 name, product3 name...], "summary":[summary]
         """
         return PromptTemplate.from_template(template)
 
@@ -136,14 +141,15 @@ def main():
     
     # Retrieval phase with different LLM if desired
     # OpenAI with gpt-4o-mini
-    retriever = RAGRetriever(vector_store, llm_provider=OpenAILLM(model_name="gpt-4o-mini"))
+    # retriever = RAGRetriever(vector_store, llm_provider=OpenAILLM(model_name="gpt-4o-mini"))
     # Ollama with llama3.2
-    #retriever = RAGRetriever(vector_store, llm_provider=OllamaLLM(model_name="llama3.2"))
+    retriever = RAGRetriever(vector_store, llm_provider=OllamaLLM(model_name="llama3.2"))
     
     topic = "ROG keris wireless aimpoint macros have a significant delay"
     description = "I recently bought a rog keris wireless aimpoint and there are some games that i like to record keyboard macros for on my mouse side buttons, but when i am in game there is a significant delay from the point i press the button and when the recorded ac..."
     result = retriever.get_result(topic, description)
-    print(result)
+    print(result["products"])
+    print(result["summary"])
 
 if __name__ == "__main__":
     main()

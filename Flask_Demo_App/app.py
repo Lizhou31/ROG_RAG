@@ -45,7 +45,8 @@ def get_forum_results():
                             "topic": post_result["topic"],
                             "url": post_result["url"],
                             "content": post_result["content"],
-                            "rag_result": rag_result
+                            "products": rag_result["products"],
+                            "summary": rag_result["summary"]
                         }
                         result_queue.put(result)
                         with completed_count.get_lock():
@@ -123,7 +124,8 @@ def get_reddit_results():
                             "title": post_result["title"],
                             "url": post_result["url"],
                             "content": post_result["content"],
-                            "rag_result": rag_result
+                            "products": rag_result["products"],
+                            "summary": rag_result["summary"]
                         }
                         result_queue.put(result)
                         with completed_count.get_lock():
