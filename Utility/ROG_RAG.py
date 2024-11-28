@@ -9,6 +9,9 @@ from langchain_community.document_transformers.openai_functions import (
     create_metadata_tagger,
 )
 from langchain_community.llms import Ollama
+from langchain_community.document_loaders import JSONLoader
+from langchain_text_splitters import RecursiveJsonSplitter
+import glob
 
 class BaseLLM(ABC):
     @abstractmethod
@@ -48,17 +51,57 @@ class OpenAILLM(BaseLLM):
             return {"products": [], "summary": result.content}
 
 class DocumentPreparation:
-    def __init__(self, file_path='RAG_Files/Mouse.txt', llm_provider: BaseLLM = None):
-        self.file_path = file_path
+    def __init__(self, directory_path='RAG_Files', llm_provider: BaseLLM = None):
+        self.directory_path = directory_path
         self.llm_provider = llm_provider if llm_provider else OpenAILLM()
+        self.json_splitter = RecursiveJsonSplitter(max_chunk_size=200)
         self.llm = self.llm_provider.get_llm()
         
     def load_documents(self):
-        with open(self.file_path) as file:
-            text = file.read()
-            chunks = text.split("<chunk>")
-            chunks = [chunk.replace("\n", "") for chunk in chunks if chunk]
-            return [Document(page_content=chunk) for chunk in chunks]
+        documents = []
+        split_docs = []
+        json_files = glob.glob(f"{self.directory_path}/Assets/*.json")
+        
+        for json_file in json_files:
+            try:
+                loader = JSONLoader(
+                    file_path=json_file,
+                    jq_schema='.',
+                    text_content=False
+                )
+                documents.extend(loader.load())
+            except Exception as e:
+                print(f"Error loading {json_file}: {e}")
+        
+        for doc in documents:
+            try:
+                # Ensure content is proper JSON before splitting
+                if isinstance(doc.page_content, str):
+                    content = json.loads(doc.page_content)
+                else:
+                    content = doc.page_content
+                
+                # Convert content to a list if it's not already
+                if not isinstance(content, list):
+                    content = [content]
+                    
+                # Split each document and maintain metadata
+                for item in content:
+                    try:
+                        splits = self.json_splitter.create_documents([item])
+                        # Copy metadata from original document to splits
+                        for split in splits:
+                            split.metadata.update(doc.metadata)
+                        split_docs.extend(splits)
+                    except Exception as e:
+                        print(f"Error splitting item in document: {e}")
+                        continue
+                        
+            except Exception as e:
+                print(f"Error processing document: {e}")
+                continue
+        
+        return split_docs
 
     def add_metadata(self, docs):
         schema = {
@@ -72,7 +115,7 @@ class DocumentPreparation:
         return metadata_tagger.transform_documents(docs)
 
 class VectorStoreManager:
-    def __init__(self, vector_store_path="vector_store.json"):
+    def __init__(self, vector_store_path="VectorStore/vector_store_2.json"):
         self.vector_store_path = vector_store_path
         
     def create_or_load_vector_store(self, documents=None):
@@ -130,14 +173,14 @@ class RAGRetriever:
         return self.llm_provider.process_result(result)
 
 def main():
-    # Document preparation phase with Ollama
-    doc_prep = DocumentPreparation(llm_provider=OpenAILLM(model_name="gpt-4o-mini"))
-    documents = doc_prep.load_documents()
-    documents = doc_prep.add_metadata(documents)
+    # Document preparation phase with gpt-4o-mini
+    # doc_prep = DocumentPreparation(llm_provider=OpenAILLM(model_name="gpt-4o-mini"))
+    # documents = doc_prep.load_documents()
+    # documents = doc_prep.add_metadata(documents)
     
     # Vector store creation/loading
     vector_manager = VectorStoreManager()
-    vector_store = vector_manager.create_or_load_vector_store(documents)
+    vector_store = vector_manager.create_or_load_vector_store()
     
     # Retrieval phase with different LLM if desired
     # OpenAI with gpt-4o-mini
@@ -148,6 +191,7 @@ def main():
     topic = "ROG keris wireless aimpoint macros have a significant delay"
     description = "I recently bought a rog keris wireless aimpoint and there are some games that i like to record keyboard macros for on my mouse side buttons, but when i am in game there is a significant delay from the point i press the button and when the recorded ac..."
     result = retriever.get_result(topic, description)
+    print(result)
     print(result["products"])
     print(result["summary"])
 

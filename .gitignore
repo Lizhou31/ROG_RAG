@@ -1,5 +1,7 @@
 API_Key/
-vector_store.json
+VectorStore/*
+RAG_Files/*
 
+.DS_Store
 **/*.pyc
 result.md
