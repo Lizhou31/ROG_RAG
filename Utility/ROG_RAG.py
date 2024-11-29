@@ -1,22 +1,15 @@
 import os
-import json
 from langchain.schema import Document
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain.prompts import PromptTemplate
-from langchain_community.document_transformers.openai_functions import (
-    create_metadata_tagger,
-)
-from langchain_community.document_loaders import JSONLoader
-from langchain_text_splitters import RecursiveJsonSplitter
-import glob
-from LLM_Provider import BaseLLM, OpenAILLM, OllamaLLM
+from Utility.LLM_Provider import BaseLLM, OpenAILLM, OllamaLLM
 
 # if need to prepare the documents
-# from Data_Preparation import DocumentPreparation
+# from Utility.Data_Preparation import DocumentPreparation
 
 class VectorStoreManager:
-    def __init__(self, vector_store_path="VectorStore/vector_store_2.json"):
+    def __init__(self, vector_store_path="VectorStore/vector_store_3.json"):
         self.vector_store_path = vector_store_path
         
     def create_or_load_vector_store(self, documents=None):
@@ -78,6 +71,7 @@ def main():
     # doc_prep = DocumentPreparation(llm_provider=OpenAILLM(model_name="gpt-4o-mini"))
     # documents = doc_prep.load_documents()
     # documents = doc_prep.add_metadata(documents)
+    # split_docs = doc_prep.split_documents(documents)
     
     # Vector store creation/loading
     vector_manager = VectorStoreManager()

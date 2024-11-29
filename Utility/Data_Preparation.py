@@ -16,7 +16,6 @@ class DocumentPreparation:
         
     def load_documents(self):
         documents = []
-        split_docs = []
         json_files = glob.glob(f"{self.directory_path}/Assets/*.json")
         
         for json_file in json_files:
@@ -29,7 +28,11 @@ class DocumentPreparation:
                 documents.extend(loader.load())
             except Exception as e:
                 print(f"Error loading {json_file}: {e}")
-        
+                
+        return documents
+
+    def split_documents(self, documents):
+        split_docs = []
         for doc in documents:
             try:
                 # Ensure content is proper JSON before splitting
@@ -60,13 +63,55 @@ class DocumentPreparation:
         
         return split_docs
 
-    def add_metadata(self, docs):
-        schema = {
+    def add_metadata(self, docs, schema=None):
+        """Add metadata to documents using the provided schema or default schema."""
+        if schema is None:
+            schema = self._get_default_schema()
+        metadata_tagger = create_metadata_tagger(metadata_schema=schema, llm=self.llm)
+        return metadata_tagger.transform_documents(docs)
+        
+    def _get_default_schema(self):
+        """Default schema for ROG product metadata."""
+        return {
             "properties": {
                 "Product Name": {"type": "string"},
                 "Product connection method": {"type": "string"},
             },
             "required": ["Product Name", "Product connection method"],
         }
-        metadata_tagger = create_metadata_tagger(metadata_schema=schema, llm=self.llm)
-        return metadata_tagger.transform_documents(docs)
+        
+    def add_product_metadata(self, docs):
+        """Add basic product metadata."""
+        return self.add_metadata(docs, self._get_default_schema())
+        
+    def add_custom_metadata(self, docs, custom_schema):
+        """Add metadata using a custom schema."""
+        return self.add_metadata(docs, custom_schema)
+
+def main():
+    # Initialize document preparation with OpenAI LLM
+    doc_prep = DocumentPreparation(llm_provider=OpenAILLM(model_name="gpt-4o-mini"))
+    
+    # Load and process documents
+    print("Loading and splitting documents...")
+    documents = doc_prep.load_documents()
+    
+    print("Adding metadata to documents...")
+    documents_with_metadata = doc_prep.add_product_metadata(documents)
+    
+    print("Splitting documents...")
+    split_docs = doc_prep.split_documents(documents_with_metadata)
+    
+    
+    print(f"Processed {len(split_docs)} documents")
+    
+    # Print sample of processed documents
+    if split_docs:
+        print("\nSample document:")
+        sample_doc = split_docs[0]
+        print(f"Content: {sample_doc.page_content[:200]}...")
+        print(f"Metadata: {sample_doc.metadata}")
+
+if __name__ == "__main__":
+    main()
+

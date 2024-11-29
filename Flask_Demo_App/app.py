@@ -2,12 +2,12 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from flask import Flask, render_template, jsonify, Response, stream_with_context
+from flask import Flask, render_template, Response, stream_with_context
 from Utility.Crawler_Forum import Forum_Crawler
 from Utility.Crawler_Reddit import RedditCrawler
-from Utility.ROG_RAG import RAGRetriever, VectorStoreManager, DocumentPreparation, OpenAILLM, OllamaLLM
+from Utility.ROG_RAG import RAGRetriever, VectorStoreManager
+from Utility.LLM_Provider import OllamaLLM
 import json
-from concurrent.futures import ThreadPoolExecutor
 import queue
 import threading
 import asyncio
@@ -15,7 +15,7 @@ from multiprocessing import Value
 app = Flask(__name__)
 
 # Initialize vector store once at startup
-doc_prep = DocumentPreparation(llm_provider=OpenAILLM(model_name="gpt-4o-mini"))
+# doc_prep = DocumentPreparation(llm_provider=OpenAILLM(model_name="gpt-4o-mini"))
 vector_manager = VectorStoreManager()
 vector_store = vector_manager.create_or_load_vector_store()
 
@@ -69,7 +69,7 @@ def get_forum_results():
 
             def run_async_processing():
                 async def process_all_posts():
-                    posts = await forum_crawler.get_latest_posts(5)
+                    posts = await forum_crawler.get_latest_posts(10)
                     tasks = []
                     for i, post in enumerate(posts):
                         task = asyncio.create_task(process_post(i, post))
@@ -107,7 +107,7 @@ def get_reddit_results():
     def generate_reddit_results():
         try:
             crawler = RedditCrawler("mouse")
-            post_data = crawler.collect_post_urls(5)
+            post_data = crawler.collect_post_urls(10)
             
             result_queue = queue.Queue()
             completed_count = Value('i', 0)
