@@ -2,16 +2,18 @@ from langchain.prompts import PromptTemplate
 try:
     from LLM_Provider import BaseLLM, OpenAILLM, OllamaLLM
     from Vector_DB import VectorStoreManager
+    from Doc_gradder import DocGrader
 except ImportError:
     from Utility.LLM_Provider import BaseLLM, OpenAILLM, OllamaLLM
     from Utility.Vector_DB import VectorStoreManager
-    
+    from Utility.Doc_gradder import DocGrader
+
 # if need to prepare the documents
-# from langchain.schema import Document
-#try:
-#    from Utility.Data_Preparation import DocumentPreparation
-#except ImportError:
-#    from Data_Preparation import DocumentPreparation
+from langchain.schema import Document
+try:
+    from Utility.Data_Preparation import DocumentPreparation
+except ImportError:
+    from Data_Preparation import DocumentPreparation
 
 class RAGRetriever:
     def __init__(self, vector_store, llm_provider: BaseLLM = None):
@@ -27,8 +29,6 @@ class RAGRetriever:
         The database contains information about the ROG products.
         1. Retrieve the most relevant products from the database base on the input topic and description.   
         2. Add a short summary about this post.
-
-        If you cannot find the result of the question, just return "Unknown" and nothing else.
         
         Input: 
         - Forum Topic: {topic}
@@ -37,6 +37,8 @@ class RAGRetriever:
         All the result should be in English.
         Retrieved Products description:
         {retrieved_docs}
+        
+        If you don't get any retrieved docs, just return "Unknown" and nothing else.
 
         Please only output in json format but no other text. The summary should be a short summary of the forum post.
         "products":[product1 name, product2 name, product3 name...], "summary":[summary]
@@ -45,25 +47,44 @@ class RAGRetriever:
 
     def format_docs(self, docs):
         return "\n\n".join(doc.page_content for doc in docs)
+    
+    def get_doc_metadata(self, docs):
+        return "\n\n".join(f"Product: {doc.metadata['Product Name']}\nDescription: {doc.metadata['short_description']}" for doc in docs)
 
     def get_result(self, topic, description):
         query = f"{topic} {description}"
         retrieved_docs = self.retriever.invoke(query)
-        input_data = {
-            "topic": topic,
-            "description": description,
-            "retrieved_docs": self.format_docs(retrieved_docs)
-        }
+        doc_metadata = self.get_doc_metadata(retrieved_docs)
+        doc_grader = DocGrader()
+        relevance_score = doc_grader.grade_retrieval(topic, description, doc_metadata)
+        # Filter out docs with low relevance scores
+        filtered_docs = [doc for i, doc in enumerate(retrieved_docs) 
+                        if relevance_score["relevance"][i] >= 6]
+        
+        # If no docs meet relevance threshold, return empty input
+        if not filtered_docs:
+            input_data = {
+                "topic": topic,
+                "description": description,
+                "retrieved_docs": ""
+            }
+        else:
+            input_data = {
+                "topic": topic,
+                "description": description,
+                "retrieved_docs": self.format_docs(filtered_docs)
+            }
         formatted_input = self.prompt.format(**input_data)
         result = self.llm.invoke(formatted_input)
         return self.llm_provider.process_result(result)
-
+    
 def main():
     # Document preparation phase with gpt-4o-mini
     # doc_prep = DocumentPreparation(llm_provider=OpenAILLM(model_name="gpt-4o-mini"))
     # documents = doc_prep.load_documents()
     # documents = doc_prep.add_metadata(documents)
     # split_docs = doc_prep.split_documents(documents)
+    # split_docs_with_description = doc_prep.add_description_metadata(split_docs)
     
     # Vector store creation/loading
     vector_manager = VectorStoreManager()

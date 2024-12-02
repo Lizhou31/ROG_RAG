@@ -5,7 +5,10 @@ from langchain_community.document_transformers.openai_functions import (
 )
 from langchain_community.document_loaders import JSONLoader
 from langchain_text_splitters import RecursiveJsonSplitter
-from LLM_Provider import BaseLLM, OpenAILLM
+try:    
+    from Utility.LLM_Provider import BaseLLM, OpenAILLM
+except:
+    from LLM_Provider import BaseLLM, OpenAILLM
 
 class DocumentPreparation:
     def __init__(self, directory_path='RAG_Files', llm_provider: BaseLLM = None):
@@ -79,10 +82,22 @@ class DocumentPreparation:
             },
             "required": ["Product Name", "Product connection method"],
         }
-        
+    
+    def _get_description_schema(self):
+        return {
+            "properties": {
+                "short_description": {"type": "string"},
+            },
+            "required": ["short_description"],
+        }
+    
     def add_product_metadata(self, docs):
         """Add basic product metadata."""
         return self.add_metadata(docs, self._get_default_schema())
+    
+    def add_description_metadata(self, docs):
+        """Add description metadata."""
+        return self.add_metadata(docs, self._get_description_schema())
         
     def add_custom_metadata(self, docs, custom_schema):
         """Add metadata using a custom schema."""
@@ -102,13 +117,15 @@ def main():
     print("Splitting documents...")
     split_docs = doc_prep.split_documents(documents_with_metadata)
     
+    print("Adding description metadata to documents...")
+    split_docs_with_description = doc_prep.add_description_metadata(split_docs)
     
-    print(f"Processed {len(split_docs)} documents")
+    print(f"Processed {len(split_docs_with_description)} documents")
     
     # Print sample of processed documents
-    if split_docs:
+    if split_docs_with_description:
         print("\nSample document:")
-        sample_doc = split_docs[0]
+        sample_doc = split_docs_with_description[4]
         print(f"Content: {sample_doc.page_content[:200]}...")
         print(f"Metadata: {sample_doc.metadata}")
 

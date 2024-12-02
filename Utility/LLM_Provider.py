@@ -36,6 +36,6 @@ class OpenAILLM(BaseLLM):
     
     def process_result(self, result):
         try:
-            return json.loads(result.content)
+            return json.loads(result.content.split("json")[1].split("}")[0] + "}")
         except json.JSONDecodeError:
-            return {"products": [], "summary": result.content}
+            return {"products": [], "summary": result.content[0]}

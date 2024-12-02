@@ -20,7 +20,7 @@ class FAISSVectorStore(BaseVectorStore):
         return FAISS.load_local(path, embeddings, allow_dangerous_deserialization=True)
 
 class VectorStoreManager:
-    def __init__(self, vector_store_path="VectorStore/vector_store_3.json", 
+    def __init__(self, vector_store_path="VectorStore/vector_store_4.json", 
                  vector_store=None, embeddings=None):
         self.vector_store_path = vector_store_path
         self.vector_store = vector_store if vector_store else FAISSVectorStore()
